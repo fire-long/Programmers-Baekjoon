@@ -10,6 +10,7 @@ def isPrime(x):
 
 def isPalindrome(x):
     if str(x) == str(x)[::-1]:
+        #[::-1]은 문자열의 처음부터 끝까지를 택하되 거꾸로된 순서로 선택함.
         return True
     return False
 
