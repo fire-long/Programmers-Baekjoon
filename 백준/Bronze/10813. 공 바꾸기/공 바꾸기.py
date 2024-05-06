@@ -7,8 +7,9 @@ temp = 0
 
 for x in range(M):
     i, j= map(int, sys.stdin.readline().split())
-    temp = input_list[i-1]
-    input_list[i-1] = input_list[j-1]
-    input_list[j-1] = temp
+#    temp = input_list[i-1]
+#    input_list[i-1] = input_list[j-1]
+#    input_list[j-1] = temp
+    input_list[i-1], input_list[j-1] = input_list[j-1], input_list[i-1]
     
 print(*input_list)
