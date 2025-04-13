@@ -1,7 +1,7 @@
-N = input()
-M = input()
-third = int(N)*int(M[2])
-fourth = int(N)*int(M[1])
-fifth = int(N)*int(M[0])
-sixth = third + fourth * 10 + fifth * 100
-print(f"{third}\n{fourth}\n{fifth}\n{sixth}")
+import sys
+N = int(sys.stdin.readline().strip())
+M = int(sys.stdin.readline().strip())
+print(N*(M%10))
+print(N*((M%100)//10))
+print(N*(M//100))
+print(N*M)
