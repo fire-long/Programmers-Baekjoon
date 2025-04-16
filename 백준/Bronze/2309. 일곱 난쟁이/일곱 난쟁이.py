@@ -1,3 +1,4 @@
+import sys
 def find_seven_dwarfs(heights):
     total_height = sum(heights)
     for i in range(9):
@@ -7,7 +8,7 @@ def find_seven_dwarfs(heights):
                 result.sort()
                 return result
 
-heights = [int(input()) for _ in range(9)]
+heights = [int(sys.stdin.readline().rstrip()) for _ in range(9)]
 
 result = find_seven_dwarfs(heights)
 for h in result:
