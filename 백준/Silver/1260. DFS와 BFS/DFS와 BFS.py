@@ -1,50 +1,35 @@
-from collections import defaultdict, deque
+from collections import deque
+import sys
 
-def dfs(graph, start):
-    visited = set()
-    stack = [start]
-    result = []
+N, M, V = map(int, sys.stdin.readline().rstrip().split())
+graph = [[False] * (N+1) for _ in range(N+1)]
 
-    while stack:
-        current = stack.pop()
-        if current not in visited:
-            visited.add(current)
-            result.append(current)
-            stack.extend(sorted(graph[current], reverse=True))
+for _ in range(M):
+    n1, n2 = map(int, sys.stdin.readline().rstrip().split())
+    graph[n1][n2] = True
+    graph[n2][n1] = True
 
-    return result
+visited1 = [False] * (N+1) #DFS
+visited2 = [False] * (N+1) #BFS
 
-def bfs(graph, start):
-    visited = set()
-    queue = deque([start])
-    result = []
+def bfs(V):
+    q = deque([V])
+    visited2[V] = True
+    while q:
+        V = q.popleft()
+        print(V, end=" ")
+        for i in range(1, N+1):
+            if not visited2[i] and graph[V][i]:
+                q.append(i)
+                visited2[i] = True
 
-    while queue:
-        current = queue.popleft()
-        if current not in visited:
-            visited.add(current)
-            result.append(current)
-            queue.extend(sorted(graph[current]))
+def dfs(V):
+    visited1[V] = True
+    print(V, end=" ")
+    for i in range(1, N+1):
+        if not visited1[i] and graph[V][i]:
+            dfs(i)
 
-    return result
-
-def main():
-    N, M, V = map(int, input().split())
-    graph = defaultdict(list)
-
-    for _ in range(M):
-        u, v = map(int, input().split())
-        graph[u].append(v)
-        graph[v].append(u)
-
-    for key in graph:
-        graph[key].sort()
-
-    dfs_result = dfs(graph, V)
-    bfs_result = bfs(graph, V)
-
-    print(' '.join(map(str, dfs_result)))
-    print(' '.join(map(str, bfs_result)))
-
-if __name__ == "__main__":
-    main()
+dfs(V)
+print()
+bfs(V)
