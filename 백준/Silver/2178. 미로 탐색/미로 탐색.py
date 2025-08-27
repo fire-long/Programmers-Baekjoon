@@ -1,26 +1,32 @@
+import sys
 from collections import deque
 
-def min_spaces_to_pass(N, M, maze):
-    queue = deque([(1, 1, 1)])  # (x, y, steps)
-    visited = set([(1, 1)])
-    directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]  # 오른쪽, 아래, 왼쪽, 위
+N, M = map(int, sys.stdin.readline().rstrip().split())
+graph = [list(map(int, list(sys.stdin.readline().rstrip()))) for _ in range(N)]
 
-    while queue:
-        x, y, steps = queue.popleft()
+cnt = [[0]*M for _ in range(N)]
+cnt[0][0] = 1
 
-        if (x, y) == (N, M):
-            return steps
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
 
-        for dx, dy in directions:
-            new_x, new_y = x + dx, y + dy
-            if 1 <= new_x <= N and 1 <= new_y <= M and maze[new_x - 1][new_y - 1] == 1 and (new_x, new_y) not in visited:
-                queue.append((new_x, new_y, steps + 1))
-                visited.add((new_x, new_y))
+def bfs(x, y):
+    q = deque()
+    q.append([x, y])
 
-# 입력값 읽어오기
-N, M = map(int, input().split())
-maze = [list(map(int, input().strip())) for _ in range(N)]
+    visited = [[False]*M for _ in range(N)]
+    visited[x][y] = True
 
-# 함수 호출 및 결과 출력
-result = min_spaces_to_pass(N, M, maze)
-print(result)
+    while q:
+        x, y = q.popleft()
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < N and 0 <= ny < M and graph[nx][ny] == 1 and not visited[nx][ny]:
+                cnt[nx][ny] = cnt[x][y] + 1
+                visited[nx][ny] = True
+                q.append([nx, ny])
+
+bfs(0, 0)
+print(cnt[N-1][M-1])
