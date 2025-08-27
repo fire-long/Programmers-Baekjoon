@@ -1,39 +1,35 @@
 import sys
-sys.setrecursionlimit(10000)
+from collections import deque
+T = int(sys.stdin.readline().rstrip())
 
-cnt = int(input())
+dx = [0, 0, -1, 1]
+dy = [-1, 1, 0, 0]
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+def bfs(graph, x, y):
+    q = deque()
+    q.append([x, y])
+    graph[x][y] = 0 #이미 방문했으니 0 표기
 
-def dfs(x, y):
-    visited[x][y] = True
+    while q:
+        x, y = q.popleft()
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if 0<=nx<M and 0<=ny<N and graph[nx][ny] == 1:
+                q.append([nx, ny])
+                graph[nx][ny] = 0
 
-    for i in range(4):
-        nx = x + dx[i]
-        ny = y + dy[i]
-
-        if 0 <= nx < n and 0 <= ny < m:
-            if visited[nx][ny] == False and maze[nx][ny] == 1:
-                dfs(nx, ny)
-
-
-for _ in range(cnt):
+for _ in range(T):
+    M, N, K = map(int, sys.stdin.readline().rstrip().split())
+    graph = [[False]*N for _ in range(M)]
+    for k in range(K):
+        X, Y = map(int, sys.stdin.readline().rstrip().split())
+        graph[X][Y] = 1
     
-    m, n, bug = map(int, input().split())
-    answer = 0
-    
-    maze = [[0 for _ in range(m)] for _ in range(n)]
-    visited = [[False for _ in range(m)] for _ in range(n)]
-
-    
-    for _ in range(bug):
-        a, b = map(int, input().split())
-        maze[b][a] = 1
-
-    for i in range(n):
-        for j in range(m):
-            if visited[i][j] == False and maze[i][j] == 1:
-                dfs(i, j)
-                answer += 1
-    print(answer)
+    cnt = 0
+    for m in range(M):
+        for n in range(N):
+            if graph[m][n] == 1:
+                bfs(graph, m, n)
+                cnt += 1
+    print(cnt)
