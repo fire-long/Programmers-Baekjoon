@@ -16,9 +16,9 @@ def dfs(x, y):
     if graph[x][y] == '|':
         graph[x][y]=True
         for _x in [1, -1]:
-            #좌우 확인
+            #상하 확인
             X = x+_x
-            #좌우 노드가 범위 내에서 '-' 모양이라면 재귀 함수 호출
+            #상하 노드가 범위 내에서 '|' 모양이라면 재귀 함수 호출
             if (X > 0 and X < N) and graph[X][y] == '|':
                 dfs(X, y)
 
