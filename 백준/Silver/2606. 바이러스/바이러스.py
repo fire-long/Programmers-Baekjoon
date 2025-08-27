@@ -1,26 +1,35 @@
-def dfs(computer, visited, adj_list):
-    visited[computer] = True
-    for neighbor in adj_list[computer]:
-        if not visited[neighbor]:
-            dfs(neighbor, visited, adj_list)
+cnt=0
+def DFS(virus):
+    global cnt
+    visited[virus]=1
 
-# 컴퓨터의 수
-n = int(input())
-# 네트워크 상에서 직접 연결되어 있는 컴퓨터 쌍의 수
-m = int(input())
+    for i in network[virus]:
+        if (visited[i]==0):
+            DFS(i)
+            cnt+=1
 
-# 그래프를 인접 리스트로 표현
-adj_list = [[] for _ in range(n + 1)]
-for _ in range(m):
+def BFS(virus):
+    global cnt
+    visited[virus] = 1
+    queue = [virus]
+    while queue:
+        for i in network[queue.pop()]:
+            if (visited[i]==0):
+                visited[i]=1
+                queue.insert(0, i)
+                cnt+=1
+
+N= int(input())
+link = int(input())
+
+network = [[]*(N+1) for _ in range(N+1)]
+
+for i in range(link):
     a, b = map(int, input().split())
-    adj_list[a].append(b)
-    adj_list[b].append(a)
+    network[a].append(b)
+    network[b].append(a)
 
-# 방문 여부를 나타내는 배열
-visited = [False] * (n + 1)
-
-# 1번 컴퓨터부터 시작하여 DFS 탐색
-dfs(1, visited, adj_list)
-
-# 1번 컴퓨터를 통해 웜 바이러스에 걸리게 되는 컴퓨터의 수 출력
-print(sum(visited) - 1)
+visited = [0]*(N+1)
+BFS(1)
+#DFS(1)
+print(cnt)
