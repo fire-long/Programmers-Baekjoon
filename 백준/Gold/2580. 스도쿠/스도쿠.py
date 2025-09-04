@@ -32,52 +32,24 @@ def backTracking(cnt):
             graph[row][col] = 0
 
 def check(num, row, col):
-    # #validation, pruning 단계
-    # #같은 행에 숫자 있는지 확인
-    # if num in graph[row]:
-    #     return False
-
-    # #같은 열에 숫자 있는지 확인
-    # #any를 써서 속도를 더 빠르게 하고자 함
-    # if any(graph[r][col] == num for r in range(9)):
-    #     return False
-    # # for row_ in graph:
-    # #     if row_[col] == num:
-    # #         return False
-    
-    # #3*3 블럭 안에 해당 숫자 있는지 확인
-    # #스도쿠 문제니까!
-    # checkRow = row//3 * 3
-    # checkCol = col//3 * 3
-
-    # #속도 개선을 위해 슬라이싱 말고 단순 반복문으로 수정
-    # # for row_ in graph[checkRow: checkRow+3]:
-    # #     for item in row_[checkCol: checkCol+3]:
-    # #         if item == num:
-    # #             return False
-    
-    # #단순 반복문으로도 안되길래... 다시 수정해봄
-    # # for r in range(checkRow, checkRow+3):
-    # #     for c in range(checkCol, checkCol+3):
-    # #         if graph[r][c] == num:
-    # #             return False
-    # for i in range(3):
-    #     for j in range(3):
-    #         if num == graph[checkRow+i][checkCol+j]:
-    #             return False
-
-    #세 조건문을 합쳐보겠음
-    checkRow = row//3 * 3
-    checkCol = col//3 * 3
-    for i in range(9):
-        #행 검사 & 열검사
-        if graph[row][i] == num or graph[i][col] == num:
+    #validation, pruning 단계
+    #같은 행에 숫자 있는지 확인
+    if num in graph[row]:
+        return False
+    #같은 열에 숫자 있는지 확인
+    for row_ in graph:
+        if row_[col] == num:
             return False
-        #블록 검사(i를 0~8로 돌려서 3*3 확인)
-        #//3은 행 offset
-        #%3은 열 offset
-        if graph[checkRow+i//3][checkCol+i%3] == num:
-            return False
+    
+    #3*3 블럭 안에 해당 숫자 있는지 확인
+    #스도쿠 문제니까!
+    checkRow = (row//3) * 3
+    checkCol = (col//3) * 3
+
+    for r in range(checkRow, checkRow+3):
+        for c in range(checkCol, checkCol+3):
+            if graph[r][c] == num:
+                return False
     
     return True
 
